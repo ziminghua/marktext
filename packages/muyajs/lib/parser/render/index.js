@@ -115,8 +115,13 @@ class StateRender {
         }
         try {
           mermaid.parse(code)
-          target.innerHTML = sanitize(code, PREVIEW_DOMPURIFY_CONFIG, true)
-          await mermaid.init(undefined, target)
+          const cleanKey = key.replace(/[^a-zA-Z0-9]/g, '_')
+          const uniqueId = `mmd_${cleanKey}_${Math.random().toString(36).slice(2, 7)}`
+          const res = await mermaid.render(uniqueId, code)
+          target.innerHTML = typeof res === 'string' ? res : res.svg
+          if (res && res.bindFunctions) {
+            res.bindFunctions(target)
+          }
           this.attachDiagramZoom(target)
         } catch (err) {
           target.innerHTML = '< Invalid Mermaid Codes >'
