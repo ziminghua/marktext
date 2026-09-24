@@ -116,7 +116,7 @@ class StateRender {
         try {
           mermaid.parse(code)
           target.innerHTML = sanitize(code, PREVIEW_DOMPURIFY_CONFIG, true)
-          mermaid.init(undefined, target)
+          await mermaid.init(undefined, target)
           this.attachDiagramZoom(target)
         } catch (err) {
           target.innerHTML = '< Invalid Mermaid Codes >'
